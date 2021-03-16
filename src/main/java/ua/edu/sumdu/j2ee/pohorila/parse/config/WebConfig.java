@@ -49,26 +49,4 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         return new RestTemplate();
     }
 
-    /*
-    * <beans xmlns="http://www.springframework.org/schema/beans"
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xsi:schemaLocation="http://www.springframework.org/schema/beans
-           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
-        <bean id="services" class="ua.edu.sumdu.j2ee.pohorila.model.services.Services">
-            <property name="services"></property>
-            <constructor-arg ref="getFilmByIdAsync"/>
-        </bean>
-        <bean id="conversionService"
-              class="org.springframework.context.support.ConversionServiceFactoryBean">
-            <property name="converters">
-                <list merge="true">
-                    <bean id="StringToFilmConverter"
-                          class="ua.edu.sumdu.j2ee.pohorila.parse.model.converters.StringToFilmConverter"/>
-                    <bean id="StringToFilmListConverter"
-                          class="ua.edu.sumdu.j2ee.pohorila.parse.model.converters.StringToFilmListConverter"/>
-                </list>
-            </property>
-        </bean>
-    </beans>
-    * */
 }

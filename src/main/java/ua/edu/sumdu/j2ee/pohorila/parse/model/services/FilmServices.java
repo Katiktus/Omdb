@@ -32,6 +32,9 @@ public class FilmServices implements  ServicesInterface{
         super();
     }
 
+    public FilmServices(String s) {
+    }
+
     public Film getFilmById(String imdb, @Value("${sbpg.init.APIKEY}") String key, @Value("${sbpg.init.SEARCH_BY_IMDB_URL}") String myURL){
         String requestUrl = myURL.replaceAll("IMDB", imdb).replaceAll("APIKEY", key);
         String request = getRequestInterface.sendGetRequest(requestUrl);
