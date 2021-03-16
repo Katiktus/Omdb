@@ -7,8 +7,6 @@ import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.context.annotation.Bean;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -23,18 +21,15 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 @Service
-public class FileServices implements  ServicesInterface{
+public class FilmServices implements  ServicesInterface{
     private static final Logger logger = LogManager.getLogger();
     @Autowired
     private ConversionService conversionService;
     @Autowired
     private SendGetRequestInterface getRequestInterface = new SendGetRequest();
-    @Autowired
-    private  RestTemplate restTemplate;
 
-    @Autowired
-    public FileServices(RestTemplateBuilder restTemplateBuilder) {
-        this.restTemplate = restTemplateBuilder.build();
+    protected FilmServices(){
+        super();
     }
 
     public Film getFilmById(String imdb, @Value("${sbpg.init.APIKEY}") String key, @Value("${sbpg.init.SEARCH_BY_IMDB_URL}") String myURL){
@@ -85,12 +80,12 @@ public class FileServices implements  ServicesInterface{
 
     }
 
-    @Async
-    @Bean("GetFilmByIdAsync")
-    public CompletableFuture<Film> getFilmByIdAsync(String id) throws InterruptedException
+    @Async("asyncExecutor")
+    public CompletableFuture<Film> getFilmByTitleAsync(String title) throws InterruptedException
     {
+        RestTemplate restTemplate = new RestTemplate();
         logger.info("getFilmById starts");
-        Film films = restTemplate.getForObject("http://localhost:8080/film?id=" + id, Film.class);
+        Film films = restTemplate.getForObject("http://localhost:8080/films?title = " + title, Film.class);
         Thread.sleep(1000L);
         logger.info("getFilmById completed");
         return CompletableFuture.completedFuture(films);
