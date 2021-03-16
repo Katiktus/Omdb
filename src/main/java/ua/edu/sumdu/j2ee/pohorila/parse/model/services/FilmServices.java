@@ -26,7 +26,7 @@ public class FilmServices implements  ServicesInterface{
     @Autowired
     private ConversionService conversionService;
     @Autowired
-    private SendGetRequestInterface getRequestInterface = new SendGetRequest();
+    private SendGetRequestInterface getRequestInterface;
 
     protected FilmServices(){
         super();
