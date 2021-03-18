@@ -42,6 +42,7 @@ public class Controller {
                                      @Value("${sbpg.init.SEARCH_URL}") String myurl) throws UnsupportedEncodingException {
         System.out.println("Get film by title here: " + title);
         List<Film> filmByTitle = filmsService.getFilmByTitle(title, apikey, myurl);
+        System.out.println("Get film by title ends here: " + title);
         return ResponseEntity.ok(filmByTitle);
     }
 
@@ -55,19 +56,35 @@ public class Controller {
     public ResponseEntity<?> writeFilmId(@RequestParam(value = "id", defaultValue = "tt0372784") String id,
                                        @RequestParam(value = "apikey", defaultValue = "6b935860") String apikey,
                                        @Value("${sbpg.init.SEARCH_BY_IMDB_URL}") String myurl) throws IOException, InterruptedException {
-        System.out.println("Get film by is here: " + id);
+        System.out.println("Write is here: " + id);
         Film filmById = filmsService.getFilmById(id, apikey, myurl);
         filmsService.writeFilmToDocByTemplate(filmById);
         return ResponseEntity.ok(filmById);
     }
 
 
+    /*@Async("asyncExecutor")
+    @RequestMapping(path = "/byTitle")
+    public void getByTitle(@RequestParam(value = "title", defaultValue = "Life") String title) throws InterruptedException, ExecutionException, UnsupportedEncodingException {
+        logger.info("testAsynch Start");
+        String[] films = title.split(",");
+        List<Film> f= new ArrayList<Film>();
+        for (String t: films) {
+            f = filmsService.getFilmByTitle(t, "6b935860", "${sbpg.init.SEARCH_URL}");
+        }
+        CompletableFuture<Film> film = filmsService.getFilmByTitleAsync(title);
+        CompletableFuture.allOf(film).join();
+        logger.info("Film " + film.get());
+    }*/
+
     @Async("asyncExecutor")
     @RequestMapping(path = "/byTitle")
     public void getByTitle(@RequestParam(value = "title", defaultValue = "Life") String title) throws InterruptedException, ExecutionException {
         logger.info("testAsynch Start");
-        CompletableFuture<Film> film = filmsService.getFilmByTitleAsync(title);
+        CompletableFuture<List> film = filmsService.getFilmByTitleAsync(title);
+        logger.info("allofJoin Start");
         CompletableFuture.allOf(film).join();
+        logger.info("allofJoin End");
         logger.info("Film " + film.get());
     }
 }

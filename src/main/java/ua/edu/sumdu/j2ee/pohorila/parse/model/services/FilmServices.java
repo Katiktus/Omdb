@@ -11,7 +11,6 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import ua.edu.sumdu.j2ee.pohorila.parse.model.SendGetRequest;
 import ua.edu.sumdu.j2ee.pohorila.parse.model.SendGetRequestInterface;
 import ua.edu.sumdu.j2ee.pohorila.parse.model.entities.Film;
 import java.io.*;
@@ -84,14 +83,22 @@ public class FilmServices implements  ServicesInterface{
     }
 
     @Async("asyncExecutor")
-    public CompletableFuture<Film> getFilmByTitleAsync(String title) throws InterruptedException
+    public CompletableFuture<List> getFilmByTitleAsync(String title) throws InterruptedException
     {
+        List f = new ArrayList<Film>();
+        String films;
         RestTemplate restTemplate = new RestTemplate();
-        logger.info("getFilmById starts");
-        Film films = restTemplate.getForObject("http://localhost:8080/films?title = " + title, Film.class);
+        logger.info("getFilmByTitle starts");
+        String[] t = title.split(", ");
+        for (String tit: t) {
+            tit = tit.replace("\"", "");
+            films = restTemplate.getForObject("http://localhost:8080/films?title=\"" + tit + "\"", String.class);
+            logger.info("getForObject ends");
+            f.add(conversionService.convert(films, f.getClass()));
+        }
         Thread.sleep(1000L);
         logger.info("getFilmById completed");
-        return CompletableFuture.completedFuture(films);
+        return CompletableFuture.completedFuture(f);
     }
 
 

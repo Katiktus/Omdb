@@ -11,8 +11,8 @@ import java.util.concurrent.CompletableFuture;
 
 public interface ServicesInterface {
 
-    public List<Film> getFilmByTitle(String title, @Value("${sbpg.init.APIKEY}") String key, @Value("${sbpg.init.SEARCH_URL}") String myURL) throws UnsupportedEncodingException;
-    public Film getFilmById(String imdb, @Value("${sbpg.init.APIKEY}") String key, @Value("${sbpg.init.SEARCH_BY_IMDB_URL}") String myURL);
+    public List<Film> getFilmByTitle(String title, String key, String myURL) throws UnsupportedEncodingException;
+    public Film getFilmById(String imdb, String key, String myURL);
     public byte[] writeFilmToDocByTemplate(Film film) throws IOException, InterruptedException;
-    public CompletableFuture<Film> getFilmByTitleAsync(String title) throws InterruptedException;
+    public CompletableFuture<List> getFilmByTitleAsync(String title) throws InterruptedException;
 }

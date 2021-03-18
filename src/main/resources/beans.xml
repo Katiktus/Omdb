@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:task="http://www.springframework.org/schema/task"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-    <bean id="services"
-          class="ua.edu.sumdu.j2ee.pohorila.parse.model.services.FilmServices">
-        <constructor-arg ref="getFilmByIdAsync"/>
-    </bean>
+
     <bean id="conversionService"
           class="org.springframework.context.support.ConversionServiceFactoryBean">
         <property name="converters">
@@ -18,4 +16,15 @@
         </property>
     </bean>
     <bean id="getFilmByIdAsync"/>
+
+    <task:annotation-driven />
+    <task:executor id="getFilmByIdAsync"
+                   pool-size="7-42"
+                   queue-capacity="11"/>
+
+    <bean id="services"
+          class="ua.edu.sumdu.j2ee.pohorila.parse.model.services.FilmServices">
+        <constructor-arg ref="getFilmByIdAsync"/>
+    </bean>
+
 </beans>
