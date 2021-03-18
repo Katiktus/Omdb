@@ -28,8 +28,7 @@ public class StringToFilmListConverter implements Converter<String, List<Film>> 
             JSONArray arr = obj.getJSONArray("Search");
             for (int i=0; i<arr.length(); i++) {
                 JSONObject search = arr.getJSONObject(i);
-                Film jsonResponse = services.getFilmById(search.getString("imdbID"),
-                        "6b935860", "http://www.omdbapi.com/?i=IMDB&apikey=APIKEY") ;
+                Film jsonResponse = services.getFilmById(search.getString("imdbID"));
                 films.add(jsonResponse);
             }
         } catch (JSONException e) {

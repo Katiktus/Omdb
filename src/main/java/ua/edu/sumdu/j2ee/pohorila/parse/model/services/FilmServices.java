@@ -26,6 +26,12 @@ public class FilmServices implements  ServicesInterface{
     private ConversionService conversionService;
     @Autowired
     private SendGetRequestInterface getRequestInterface;
+    @Value("${sbpg.init.APIKEY}")
+    public String key;
+    @Value("${sbpg.init.SEARCH_BY_IMDB_URL}")
+    public String myURLid;
+    @Value("${sbpg.init.SEARCH_URL}")
+    public String myURL;
 
     protected FilmServices(){
         super();
@@ -34,14 +40,14 @@ public class FilmServices implements  ServicesInterface{
     public FilmServices(String s) {
     }
 
-    public Film getFilmById(String imdb, @Value("${sbpg.init.APIKEY}") String key, @Value("${sbpg.init.SEARCH_BY_IMDB_URL}") String myURL){
-        String requestUrl = myURL.replaceAll("IMDB", imdb).replaceAll("APIKEY", key);
+    public Film getFilmById(String imdb){
+        String requestUrl = myURLid.replaceAll("IMDB", imdb).replaceAll("APIKEY", key);
         String request = getRequestInterface.sendGetRequest(requestUrl);
         Film result = conversionService.convert(request, Film.class);
         return result;
     }
 
-    public List<Film> getFilmByTitle(String title, @Value("${sbpg.init.APIKEY}") String key, @Value("${sbpg.init.SEARCH_URL}") String myURL) throws UnsupportedEncodingException {
+    public List<Film> getFilmByTitle(String title) throws UnsupportedEncodingException {
         List<Film> films = new ArrayList<>();
         title = URLEncoder.encode(title, "UTF-8");
         String requestUrl = myURL.replaceAll("TITLE", title).replaceAll("APIKEY", key);

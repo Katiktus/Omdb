@@ -2,7 +2,6 @@ package ua.edu.sumdu.j2ee.pohorila.parse.controller;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
@@ -27,21 +26,17 @@ public class Controller {
 
     @RequestMapping(value = "/film", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> getFilmId(@RequestParam(value = "id", defaultValue = "tt0372784") String id,
-                                     @RequestParam(value = "apikey", defaultValue = "6b935860") String apikey,
-                                     @Value("${sbpg.init.SEARCH_BY_IMDB_URL}") String myurl){
+    public ResponseEntity<?> getFilmId(@RequestParam(value = "id", defaultValue = "tt0372784") String id){
         System.out.println("Get film by is here: " + id);
-        Film filmById = filmsService.getFilmById(id, apikey, myurl);
+        Film filmById = filmsService.getFilmById(id);
         return ResponseEntity.ok(filmById);
     }
 
     @RequestMapping(value = "/films", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> getFilmTitle(@RequestParam(value = "title", defaultValue = "Life") String title,
-                                     @RequestParam(value = "apikey", defaultValue = "6b935860") String apikey,
-                                     @Value("${sbpg.init.SEARCH_URL}") String myurl) throws UnsupportedEncodingException {
+    public ResponseEntity<?> getFilmTitle(@RequestParam(value = "title", defaultValue = "Life") String title) throws UnsupportedEncodingException {
         System.out.println("Get film by title here: " + title);
-        List<Film> filmByTitle = filmsService.getFilmByTitle(title, apikey, myurl);
+        List<Film> filmByTitle = filmsService.getFilmByTitle(title);
         System.out.println("Get film by title ends here: " + title);
         return ResponseEntity.ok(filmByTitle);
     }
@@ -53,29 +48,12 @@ public class Controller {
 
     @RequestMapping(value = "/writeFilm", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> writeFilmId(@RequestParam(value = "id", defaultValue = "tt0372784") String id,
-                                       @RequestParam(value = "apikey", defaultValue = "6b935860") String apikey,
-                                       @Value("${sbpg.init.SEARCH_BY_IMDB_URL}") String myurl) throws IOException, InterruptedException {
+    public ResponseEntity<?> writeFilmId(@RequestParam(value = "id", defaultValue = "tt0372784") String id) throws IOException, InterruptedException {
         System.out.println("Write is here: " + id);
-        Film filmById = filmsService.getFilmById(id, apikey, myurl);
+        Film filmById = filmsService.getFilmById(id);
         filmsService.writeFilmToDocByTemplate(filmById);
         return ResponseEntity.ok(filmById);
     }
-
-
-    /*@Async("asyncExecutor")
-    @RequestMapping(path = "/byTitle")
-    public void getByTitle(@RequestParam(value = "title", defaultValue = "Life") String title) throws InterruptedException, ExecutionException, UnsupportedEncodingException {
-        logger.info("testAsynch Start");
-        String[] films = title.split(",");
-        List<Film> f= new ArrayList<Film>();
-        for (String t: films) {
-            f = filmsService.getFilmByTitle(t, "6b935860", "${sbpg.init.SEARCH_URL}");
-        }
-        CompletableFuture<Film> film = filmsService.getFilmByTitleAsync(title);
-        CompletableFuture.allOf(film).join();
-        logger.info("Film " + film.get());
-    }*/
 
     @Async("asyncExecutor")
     @RequestMapping(path = "/byTitle")
