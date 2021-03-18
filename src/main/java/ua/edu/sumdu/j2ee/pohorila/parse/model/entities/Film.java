@@ -17,7 +17,7 @@ public class Film {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Film film = (Film) o;
-        return year == film.year && Objects.equals(title, film.title) && Objects.equals(directory, film.directory) && Objects.equals(duration, film.duration) && Objects.equals(genre, film.genre) && Objects.equals(description, film.description) && Objects.equals(posterLink, film.posterLink);
+        return year.equals(film.year) && Objects.equals(title, film.title) && Objects.equals(directory, film.directory) && Objects.equals(duration, film.duration) && Objects.equals(genre, film.genre) && Objects.equals(description, film.description) && Objects.equals(posterLink, film.posterLink);
     }
 
     @Override

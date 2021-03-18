@@ -11,8 +11,6 @@ import org.springframework.web.servlet.config.annotation.ContentNegotiationConfi
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import ua.edu.sumdu.j2ee.pohorila.parse.model.converters.StringToFilmConverter;
 import ua.edu.sumdu.j2ee.pohorila.parse.model.converters.StringToFilmListConverter;
-import ua.edu.sumdu.j2ee.pohorila.parse.model.services.FilmServices;
-import ua.edu.sumdu.j2ee.pohorila.parse.model.services.ServicesInterface;
 
 import java.util.concurrent.Executor;
 
