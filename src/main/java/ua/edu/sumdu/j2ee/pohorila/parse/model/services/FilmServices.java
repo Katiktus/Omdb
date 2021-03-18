@@ -56,7 +56,7 @@ public class FilmServices implements  ServicesInterface{
         return films;
     }
 
-    public byte[] writeFilmToDocByTemplate(Film film) throws IOException, InterruptedException {
+    public File writeFilmToDocByTemplate(Film film) throws IOException, InterruptedException {
         File file = new File("src//main//resources//templates//result.docx");
         FileInputStream fis = new FileInputStream(file.getAbsolutePath());
         try (XWPFDocument document = new XWPFDocument(fis)) {
@@ -83,7 +83,8 @@ public class FilmServices implements  ServicesInterface{
             try(FileOutputStream outputStream = new FileOutputStream("src/main/resources/templates/"+film.getTitle()+".docx")){
             outputStream.write(stream.toByteArray());
             }
-            return stream.toByteArray();
+            File res = new File("src/main/resources/templates/"+film.getTitle()+".docx");
+            return res;
         }
 
     }

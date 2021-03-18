@@ -51,8 +51,7 @@ public class Controller {
     public ResponseEntity<?> writeFilmId(@RequestParam(value = "id", defaultValue = "tt0372784") String id) throws IOException, InterruptedException {
         System.out.println("Write is here: " + id);
         Film filmById = filmsService.getFilmById(id);
-        filmsService.writeFilmToDocByTemplate(filmById);
-        return ResponseEntity.ok(filmById);
+        return ResponseEntity.ok(filmsService.writeFilmToDocByTemplate(filmById));
     }
 
     @Async("asyncExecutor")
