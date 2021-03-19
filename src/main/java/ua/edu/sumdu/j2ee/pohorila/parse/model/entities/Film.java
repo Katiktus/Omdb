@@ -3,6 +3,7 @@ package ua.edu.sumdu.j2ee.pohorila.parse.model.entities;
 import java.util.Objects;
 
 public class Film {
+
     String title;
     String directory;
     String year;

@@ -22,18 +22,18 @@ public class StringToFilmListConverter implements Converter<String, List<Film>> 
 
     @Override
     public List<Film> convert(String source) {
-        List<Film> films = new ArrayList<Film>();
+        List<Film> film = new ArrayList<>();
         try {
             JSONObject obj = new JSONObject(source);
             JSONArray arr = obj.getJSONArray("Search");
             for (int i=0; i<arr.length(); i++) {
                 JSONObject search = arr.getJSONObject(i);
                 Film jsonResponse = services.getFilmById(search.getString("imdbID"));
-                films.add(jsonResponse);
+                film.add(jsonResponse);
             }
         } catch (JSONException e) {
             logger.error("Error message", e);
         }
-        return films;
+        return film;
     }
 }

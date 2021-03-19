@@ -1,16 +1,16 @@
 package ua.edu.sumdu.j2ee.pohorila.parse.model.services;
 
 import ua.edu.sumdu.j2ee.pohorila.parse.model.entities.Film;
+import ua.edu.sumdu.j2ee.pohorila.parse.model.entities.FilmList;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public interface ServicesInterface {
-    public List<Film> getFilmByTitle(String title) throws UnsupportedEncodingException;
+    public FilmList getFilmByTitle(String title) throws UnsupportedEncodingException;
     public Film getFilmById(String imdb);
     public File writeFilmToDocByTemplate(Film film) throws IOException, InterruptedException;
-    public CompletableFuture<List> getFilmByTitleAsync(String title) throws InterruptedException;
+    public CompletableFuture<String> getFilmByTitleAsync(String title) throws InterruptedException;
 }

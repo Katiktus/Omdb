@@ -13,10 +13,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import ua.edu.sumdu.j2ee.pohorila.parse.model.SendGetRequestInterface;
 import ua.edu.sumdu.j2ee.pohorila.parse.model.entities.Film;
+import ua.edu.sumdu.j2ee.pohorila.parse.model.entities.FilmList;
+
 import java.io.*;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 @Service
@@ -47,13 +47,11 @@ public class FilmServices implements  ServicesInterface{
         return result;
     }
 
-    public List<Film> getFilmByTitle(String title) throws UnsupportedEncodingException {
-        List<Film> films = new ArrayList<>();
+    public FilmList getFilmByTitle(String title) throws UnsupportedEncodingException {
         title = URLEncoder.encode(title, "UTF-8");
         String requestUrl = myURL.replaceAll("TITLE", title).replaceAll("APIKEY", key);
         String request = getRequestInterface.sendGetRequest(requestUrl);
-        films = conversionService.convert(request, films.getClass());
-        return films;
+        return conversionService.convert(request, FilmList.class);
     }
 
     public File writeFilmToDocByTemplate(Film film) throws IOException, InterruptedException {
@@ -90,24 +88,22 @@ public class FilmServices implements  ServicesInterface{
     }
 
     @Async("asyncExecutor")
-    public CompletableFuture<List> getFilmByTitleAsync(String title) throws InterruptedException
+    public CompletableFuture<String> getFilmByTitleAsync(String title) throws InterruptedException
     {
-        List f = new ArrayList<Film>();
-        String films;
+        FilmList f = new FilmList();
+        String film;
         RestTemplate restTemplate = new RestTemplate();
         logger.info("getFilmByTitle starts");
         String[] t = title.split(", ");
         for (String tit: t) {
             tit = tit.replace("\"", "");
-            films = restTemplate.getForObject("http://localhost:8080/films?title=\"" + tit + "\"", String.class);
+            film = restTemplate.getForObject("http://localhost:8080/films?title=\"" + tit + "\"", String.class);
             logger.info("getForObject ends");
-            f.add(conversionService.convert(films, f.getClass()));
+            f = conversionService.convert(film, f.getClass());
         }
         Thread.sleep(1000L);
         logger.info("getFilmById completed");
-        return CompletableFuture.completedFuture(f);
+        return CompletableFuture.completedFuture(f.films.toString());
     }
 
-
 }
-
