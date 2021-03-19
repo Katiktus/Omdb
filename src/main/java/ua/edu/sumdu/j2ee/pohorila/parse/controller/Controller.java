@@ -39,8 +39,8 @@ public class Controller {
         FilmList filmList;
         filmList = filmsService.getFilmByTitle(title);
         System.out.println("Get film by title ends here: " + title);
-        System.out.println(filmList.toString());
-        return ResponseEntity.ok(filmList.toString());
+        System.out.println(filmList);
+        return ResponseEntity.ok(filmList);
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
