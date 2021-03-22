@@ -17,6 +17,11 @@ public class SendGetRequest implements SendGetRequestInterface {
 
     }
 
+    /**
+     * Method for sending get request.
+     * @param requestUrl URL for send request.
+     * @return String.
+     */
     public String sendGetRequest(String requestUrl) {
         StringBuffer response = new StringBuffer();
         try {

@@ -9,22 +9,34 @@ import org.springframework.web.bind.annotation.*;
 import ua.edu.sumdu.j2ee.pohorila.parse.model.entities.Film;
 import ua.edu.sumdu.j2ee.pohorila.parse.model.entities.FilmList;
 import ua.edu.sumdu.j2ee.pohorila.parse.model.services.ServicesInterface;
-
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
+/**
+ * Class for controller.
+ */
 @RestController
 public class Controller {
+    /**
+     * Services injection.
+     */
     private final ServicesInterface filmsService;
     private static final Logger logger = LogManager.getLogger();
 
+    /**
+     * Constructor for controller.
+     * @param filmsService
+     */
     public Controller(ServicesInterface filmsService) {
         this.filmsService = filmsService;
     }
 
+    /**
+     * Method for receive film using id.
+     * @param id search identifier.
+     * @return result of request.
+     */
     @RequestMapping(value = "/film", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?> getFilmId(@RequestParam(value = "id", defaultValue = "tt0372784") String id) {
@@ -33,6 +45,12 @@ public class Controller {
         return ResponseEntity.ok(filmById);
     }
 
+    /**
+     * Method for receive film using title.
+     * @param title what we want to find.
+     * @return list of films.
+     * @throws UnsupportedEncodingException
+     */
     @RequestMapping(value = "/films", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?> getFilmTitle(@RequestParam(value = "title", defaultValue = "Life") String title) throws UnsupportedEncodingException {
@@ -42,11 +60,21 @@ public class Controller {
         return ResponseEntity.ok(filmList);
     }
 
+    /**
+     * Test method.
+     */
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ResponseEntity<?> test() {
         return ResponseEntity.ok("Everything is ok");
     }
 
+    /**
+     * Method for writing information about film.
+     * @param id identification for search.
+     * @return file.
+     * @throws IOException
+     * @throws InterruptedException
+     */
     @RequestMapping(value = "/writeFilm", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?> writeFilmId(@RequestParam(value = "id", defaultValue = "tt0372784") String id) throws IOException, InterruptedException {
@@ -55,10 +83,16 @@ public class Controller {
         return ResponseEntity.ok(filmsService.writeFilmToDocByTemplate(filmById));
     }
 
+    /**
+     * Method for async invocation of searching.
+     * @param title identification for search.
+     * @return list of films.
+     * @throws InterruptedException
+     */
     @Async("asyncExecutor")
     @RequestMapping(path = "/byTitle")
     @ResponseStatus(HttpStatus.OK)
-    public CompletableFuture<FilmList> getByTitle(@RequestParam(value = "title", defaultValue = "Life") String title) throws InterruptedException, ExecutionException {
+    public CompletableFuture<FilmList> getByTitle(@RequestParam(value = "title", defaultValue = "Life") String title) throws InterruptedException {
         CompletableFuture<FilmList> film = filmsService.getFilmByTitleAsync(title);
         CompletableFuture.allOf(film).join();
         return film;

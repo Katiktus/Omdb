@@ -40,6 +40,11 @@ public class FilmServices implements  ServicesInterface{
     public FilmServices(String s) {
     }
 
+    /**
+     * Service for receive film by ID.
+     * @param imdb identification for search.
+     * @return Film.
+     */
     public Film getFilmById(String imdb){
         String requestUrl = myURLid.replaceAll("IMDB", imdb).replaceAll("APIKEY", key);
         String request = getRequestInterface.sendGetRequest(requestUrl);
@@ -47,6 +52,11 @@ public class FilmServices implements  ServicesInterface{
         return result;
     }
 
+    /**
+     * Service for receive film by title.
+     * @param title identification for search.
+     * @return FilmList.
+     */
     public FilmList getFilmByTitle(String title) throws UnsupportedEncodingException {
         title = URLEncoder.encode(title, "UTF-8");
         String requestUrl = myURL.replaceAll("TITLE", title).replaceAll("APIKEY", key);
@@ -54,6 +64,11 @@ public class FilmServices implements  ServicesInterface{
         return conversionService.convert(request, FilmList.class);
     }
 
+    /**
+     * Service for writing film.
+     * @param film identification for write.
+     * @return File.
+     */
     public File writeFilmToDocByTemplate(Film film) throws IOException {
         File file = new File("src//main//resources//templates//result.docx");
         FileInputStream fis = new FileInputStream(file.getAbsolutePath());
@@ -87,6 +102,12 @@ public class FilmServices implements  ServicesInterface{
 
     }
 
+    /**
+     * Service for receive film by title in asynchronous way.
+     * @param title identification for search.
+     * @return CompletableFuture<FilmList>.
+     * @throws InterruptedException
+     */
     @Async("asyncExecutor")
     public CompletableFuture<FilmList> getFilmByTitleAsync(String title) throws InterruptedException
     {

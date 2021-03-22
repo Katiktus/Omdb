@@ -7,10 +7,18 @@ import org.springframework.stereotype.Component;
 import ua.edu.sumdu.j2ee.pohorila.parse.model.entities.Film;
 import org.json.*;
 
+/**
+ * Converter from string to Film.
+ */
 @Component
 public class StringToFilmConverter implements Converter<String, Film>{
     private static final Logger logger = LogManager.getLogger();
 
+    /**
+     * Overriding converter.
+     * @param source resource for conversion.
+     * @return Film.
+     */
     @Override
     public Film convert(String source) {
             Film film = new Film();
