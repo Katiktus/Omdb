@@ -12,6 +12,7 @@ import ua.edu.sumdu.j2ee.pohorila.parse.model.services.ServicesInterface;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -36,11 +37,16 @@ public class Controller {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?> getFilmTitle(@RequestParam(value = "title", defaultValue = "Life") String title) throws UnsupportedEncodingException {
         System.out.println("Get film by title here: " + title);
-        FilmList filmList;
-        filmList = filmsService.getFilmByTitle(title);
+        FilmList filmList = filmsService.getFilmByTitle(title);
         System.out.println("Get film by title ends here: " + title);
         System.out.println(filmList);
         return ResponseEntity.ok(filmList);
+    }
+
+    @RequestMapping(value = "/filmTest", method = RequestMethod.GET)
+    public ResponseEntity<?> testFilm(@RequestParam(value = "title", defaultValue = "Life") String title) throws UnsupportedEncodingException {
+        List<Film> film = filmsService.getFilm(title);
+        return ResponseEntity.ok(film);
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
@@ -60,11 +66,8 @@ public class Controller {
     @RequestMapping(path = "/byTitle")
     @ResponseStatus(HttpStatus.OK)
     public void getByTitle(@RequestParam(value = "title", defaultValue = "Life") String title) throws InterruptedException, ExecutionException {
-        logger.info("testAsynch Start");
-        CompletableFuture<String> film = filmsService.getFilmByTitleAsync(title);
-        logger.info("allofJoin Start");
+        CompletableFuture<FilmList> film = filmsService.getFilmByTitleAsync(title);
         CompletableFuture.allOf(film).join();
-        logger.info("allofJoin End");
     }
 }
 
