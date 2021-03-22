@@ -28,7 +28,7 @@ public class Controller {
     @RequestMapping(value = "/film", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?> getFilmId(@RequestParam(value = "id", defaultValue = "tt0372784") String id) {
-        System.out.println("Get film by is here: " + id);
+        logger.info("Get film by is here: " + id);
         Film filmById = filmsService.getFilmById(id);
         return ResponseEntity.ok(filmById);
     }
@@ -36,17 +36,10 @@ public class Controller {
     @RequestMapping(value = "/films", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?> getFilmTitle(@RequestParam(value = "title", defaultValue = "Life") String title) throws UnsupportedEncodingException {
-        System.out.println("Get film by title here: " + title);
+        logger.info("Get film by title here: " + title);
         FilmList filmList = filmsService.getFilmByTitle(title);
-        System.out.println("Get film by title ends here: " + title);
-        System.out.println(filmList);
+        logger.info("Get film by title ends here: " + title);
         return ResponseEntity.ok(filmList);
-    }
-
-    @RequestMapping(value = "/filmTest", method = RequestMethod.GET)
-    public ResponseEntity<?> testFilm(@RequestParam(value = "title", defaultValue = "Life") String title) throws UnsupportedEncodingException {
-        List<Film> film = filmsService.getFilm(title);
-        return ResponseEntity.ok(film);
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
@@ -57,7 +50,7 @@ public class Controller {
     @RequestMapping(value = "/writeFilm", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?> writeFilmId(@RequestParam(value = "id", defaultValue = "tt0372784") String id) throws IOException, InterruptedException {
-        System.out.println("Write is here: " + id);
+        logger.info("Write is here: " + id);
         Film filmById = filmsService.getFilmById(id);
         return ResponseEntity.ok(filmsService.writeFilmToDocByTemplate(filmById));
     }
@@ -65,9 +58,10 @@ public class Controller {
     @Async("asyncExecutor")
     @RequestMapping(path = "/byTitle")
     @ResponseStatus(HttpStatus.OK)
-    public void getByTitle(@RequestParam(value = "title", defaultValue = "Life") String title) throws InterruptedException, ExecutionException {
+    public CompletableFuture<FilmList> getByTitle(@RequestParam(value = "title", defaultValue = "Life") String title) throws InterruptedException, ExecutionException {
         CompletableFuture<FilmList> film = filmsService.getFilmByTitleAsync(title);
         CompletableFuture.allOf(film).join();
+        return film;
     }
 }
 
