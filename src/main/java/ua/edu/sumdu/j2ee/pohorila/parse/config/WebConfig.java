@@ -11,7 +11,6 @@ import org.springframework.web.servlet.config.annotation.ContentNegotiationConfi
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import ua.edu.sumdu.j2ee.pohorila.parse.model.converters.StringToFilmConverter;
 import ua.edu.sumdu.j2ee.pohorila.parse.model.converters.StringToFilmListConverter;
-import ua.edu.sumdu.j2ee.pohorila.parse.model.converters.StringToListConverter;
 
 import java.util.concurrent.Executor;
 
@@ -30,7 +29,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     public void addFormatters(FormatterRegistry registry) {
         registry.addConverter(new StringToFilmListConverter());
         registry.addConverter(new StringToFilmConverter());
-        registry.addConverter(new StringToListConverter());
     }
 
     @Bean

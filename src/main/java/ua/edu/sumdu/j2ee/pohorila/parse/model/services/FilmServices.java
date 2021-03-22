@@ -17,8 +17,6 @@ import ua.edu.sumdu.j2ee.pohorila.parse.model.entities.FilmList;
 
 import java.io.*;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 @Service
@@ -50,24 +48,11 @@ public class FilmServices implements  ServicesInterface{
     }
 
     public FilmList getFilmByTitle(String title) throws UnsupportedEncodingException {
-        System.out.println("l1");
         title = URLEncoder.encode(title, "UTF-8");
-        System.out.println("l2");
         String requestUrl = myURL.replaceAll("TITLE", title).replaceAll("APIKEY", key);
-        System.out.println("l2");
         String request = getRequestInterface.sendGetRequest(requestUrl);
-        System.out.println("l3");
         return conversionService.convert(request, FilmList.class);
     }
-
-    public List<Film> getFilm(String title) throws UnsupportedEncodingException {
-        List<Film> film = new ArrayList<>();
-        title = URLEncoder.encode(title, "UTF-8");
-        String requestUrl = myURL.replaceAll("TITLE", title).replaceAll("APIKEY", key);
-        String request = getRequestInterface.sendGetRequest(requestUrl);
-        return conversionService.convert(request, film.getClass());
-    }
-
 
     public File writeFilmToDocByTemplate(Film film) throws IOException {
         File file = new File("src//main//resources//templates//result.docx");
