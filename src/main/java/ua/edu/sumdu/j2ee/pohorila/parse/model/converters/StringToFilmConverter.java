@@ -12,8 +12,6 @@ import ua.edu.sumdu.j2ee.pohorila.parse.model.services.ServicesInterface;
 @Component
 public class StringToFilmConverter implements Converter<String, Film>{
     private static final Logger logger = LogManager.getLogger();
-    @Autowired
-    private static ServicesInterface services;
 
     @Override
     public Film convert(String source) {

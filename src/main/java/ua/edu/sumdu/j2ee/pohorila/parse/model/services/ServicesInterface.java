@@ -6,11 +6,13 @@ import ua.edu.sumdu.j2ee.pohorila.parse.model.entities.FilmList;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public interface ServicesInterface {
     public FilmList getFilmByTitle(String title) throws UnsupportedEncodingException;
     public Film getFilmById(String imdb);
     public File writeFilmToDocByTemplate(Film film) throws IOException, InterruptedException;
-    public CompletableFuture<String> getFilmByTitleAsync(String title) throws InterruptedException;
+    public CompletableFuture<FilmList> getFilmByTitleAsync(String title) throws InterruptedException;
+    public List<Film> getFilm(String title) throws UnsupportedEncodingException;
 }

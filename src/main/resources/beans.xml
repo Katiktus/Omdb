@@ -12,6 +12,8 @@
                       class="ua.edu.sumdu.j2ee.pohorila.parse.model.converters.StringToFilmConverter"/>
                 <bean id="StringToFilmListConverter"
                       class="ua.edu.sumdu.j2ee.pohorila.parse.model.converters.StringToFilmListConverter"/>
+                <bean id="StringToListConverter"
+                      class="ua.edu.sumdu.j2ee.pohorila.parse.model.converters.StringToFilmListConverter"/>
             </list>
         </property>
     </bean>
