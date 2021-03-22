@@ -2,6 +2,9 @@ package ua.edu.sumdu.j2ee.pohorila.parse.model.entities;
 
 import java.util.Objects;
 
+/**
+ * Entity for Film.
+ */
 public class Film {
 
     String title;

@@ -14,6 +14,10 @@ import ua.edu.sumdu.j2ee.pohorila.parse.model.converters.StringToFilmListConvert
 
 import java.util.concurrent.Executor;
 
+/**
+ * Config class.
+ */
+
 @Configuration
 @EnableAsync
 public class WebConfig extends WebMvcConfigurerAdapter {
@@ -25,12 +29,19 @@ public class WebConfig extends WebMvcConfigurerAdapter {
                 mediaType("xml", MediaType.APPLICATION_XML);
     }
 
+    /**
+     * Converters registration.
+     */
     @Override
     public void addFormatters(FormatterRegistry registry) {
         registry.addConverter(new StringToFilmListConverter());
         registry.addConverter(new StringToFilmConverter());
     }
 
+    /**
+     * Bean for async executor.
+     * @return Executor.
+     */
     @Bean
     public Executor asyncExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
@@ -42,6 +53,10 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         return executor;
     }
 
+    /**
+     * Bean for rest template.
+     * @return RestTemplate.
+     */
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplate();

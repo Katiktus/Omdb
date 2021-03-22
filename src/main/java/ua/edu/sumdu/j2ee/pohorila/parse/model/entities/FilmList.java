@@ -2,6 +2,9 @@ package ua.edu.sumdu.j2ee.pohorila.parse.model.entities;
 
 import java.util.*;
 
+/**
+ * Implementation list of films.
+ */
 public class FilmList extends ArrayList<Film> {
     public ArrayList<Film> films = new ArrayList<>();
 

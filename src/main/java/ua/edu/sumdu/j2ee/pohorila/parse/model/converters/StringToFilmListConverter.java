@@ -10,10 +10,18 @@ import org.springframework.stereotype.Component;
 import ua.edu.sumdu.j2ee.pohorila.parse.model.entities.Film;
 import ua.edu.sumdu.j2ee.pohorila.parse.model.entities.FilmList;
 
+/**
+ * Converter from string to FilmList.
+ */
 @Component
 public class StringToFilmListConverter implements Converter<String, FilmList> {
     private static final Logger logger = LogManager.getLogger();
 
+    /**
+     * Overriding converter.
+     * @param source resource for conversion.
+     * @return FilmList.
+     */
     @Override
     public FilmList convert(String source) {
         FilmList film = new FilmList();
