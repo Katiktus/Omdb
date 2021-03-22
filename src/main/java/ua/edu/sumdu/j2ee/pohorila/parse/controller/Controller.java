@@ -66,11 +66,8 @@ public class Controller {
     @RequestMapping(path = "/byTitle")
     @ResponseStatus(HttpStatus.OK)
     public void getByTitle(@RequestParam(value = "title", defaultValue = "Life") String title) throws InterruptedException, ExecutionException {
-        logger.info("testAsynch Start");
         CompletableFuture<FilmList> film = filmsService.getFilmByTitleAsync(title);
-        logger.info("allofJoin Start");
         CompletableFuture.allOf(film).join();
-        logger.info("allofJoin End");
     }
 }
 

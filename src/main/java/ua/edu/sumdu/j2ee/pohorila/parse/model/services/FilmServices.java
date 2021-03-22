@@ -39,8 +39,8 @@ public class FilmServices implements  ServicesInterface{
         super();
     }
 
-   /* public FilmServices(String s) {
-    }*/
+    public FilmServices(String s) {
+    }
 
     public Film getFilmById(String imdb){
         String requestUrl = myURLid.replaceAll("IMDB", imdb).replaceAll("APIKEY", key);
@@ -120,6 +120,5 @@ public class FilmServices implements  ServicesInterface{
         logger.info("getFilmById completed");
         return CompletableFuture.completedFuture(f);
     }
-
 
 }

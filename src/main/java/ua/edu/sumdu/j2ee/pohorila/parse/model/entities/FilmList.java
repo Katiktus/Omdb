@@ -3,7 +3,7 @@ package ua.edu.sumdu.j2ee.pohorila.parse.model.entities;
 import java.util.*;
 
 public class FilmList extends ArrayList<Film> {
-    public List<Film> films;
+    public ArrayList<Film> films = new ArrayList<>();
 
     public FilmList(){
         super();
@@ -150,7 +150,4 @@ public class FilmList extends ArrayList<Film> {
         return films;
     }
 
-    public void setFilms(List<Film> films) {
-        this.films = films;
-    }
 }
