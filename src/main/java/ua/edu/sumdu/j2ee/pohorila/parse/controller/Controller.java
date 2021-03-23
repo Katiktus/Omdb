@@ -84,14 +84,16 @@ public class Controller {
      * @throws IOException
      * @throws InterruptedException
      */
-    @RequestMapping(value = "/writeFilm", method = RequestMethod.GET, produces = "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+    @RequestMapping(value = "/writeFilm", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public ResponseEntity<?> writeFilmId(@RequestParam(value = "id", defaultValue = "tt0372784") String id) throws IOException, InterruptedException {
         HttpHeaders header = new HttpHeaders();
         Film film = filmsService.getFilmById(id);
-        header.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + film.getTitle().replace(" ", "_") + ".docx");
+        header.setContentDispositionFormData( "attachment", film.getTitle().replace(" ", "_") + ".docx");
+        header.setContentType(new MediaType("application", "vnd.openxmlformats-officedocument.wordprocessingml.document"));
         byte[] file = filmsService.writeFilmToDocByTemplate(film);
+        header.setContentLength(file.length);
         InputStreamResource inputStreamResource = new InputStreamResource (new ByteArrayInputStream(file));
         return ResponseEntity.ok().headers(header).body(inputStreamResource);
     }
