@@ -69,7 +69,7 @@ public class FilmServices implements  ServicesInterface{
      * @param film identification for write.
      * @return File.
      */
-    public File writeFilmToDocByTemplate(Film film) throws IOException {
+    public byte[] writeFilmToDocByTemplate(Film film) throws IOException {
         File file = new File("src//main//resources//templates//result.docx");
         FileInputStream fis = new FileInputStream(file.getAbsolutePath());
         try (XWPFDocument document = new XWPFDocument(fis)) {
@@ -93,11 +93,7 @@ public class FilmServices implements  ServicesInterface{
                 logger.error("Error message", e);
                 return null;
             }
-            try(FileOutputStream outputStream = new FileOutputStream("src/main/resources/templates/"+film.getTitle()+".docx")){
-            outputStream.write(stream.toByteArray());
-            }
-            File res = new File("src/main/resources/templates/"+film.getTitle()+".docx");
-            return res;
+            return stream.toByteArray();
         }
 
     }
