@@ -1,14 +1,23 @@
 package ua.edu.sumdu.j2ee.pohorila.parse.controller;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 import ua.edu.sumdu.j2ee.pohorila.parse.model.entities.Film;
 import ua.edu.sumdu.j2ee.pohorila.parse.model.entities.FilmList;
 import ua.edu.sumdu.j2ee.pohorila.parse.model.services.ServicesInterface;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.concurrent.CompletableFuture;
@@ -75,12 +84,16 @@ public class Controller {
      * @throws IOException
      * @throws InterruptedException
      */
-    @RequestMapping(value = "/writeFilm", method = RequestMethod.GET)
+    @RequestMapping(value = "/writeFilm", method = RequestMethod.GET, produces = "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
     @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
     public ResponseEntity<?> writeFilmId(@RequestParam(value = "id", defaultValue = "tt0372784") String id) throws IOException, InterruptedException {
-        logger.info("Write is here: " + id);
-        Film filmById = filmsService.getFilmById(id);
-        return ResponseEntity.ok(filmsService.writeFilmToDocByTemplate(filmById));
+        HttpHeaders header = new HttpHeaders();
+        Film film = filmsService.getFilmById(id);
+        header.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + film.getTitle().replace(" ", "_") + ".docx");
+        byte[] file = filmsService.writeFilmToDocByTemplate(film);
+        InputStreamResource inputStreamResource = new InputStreamResource (new ByteArrayInputStream(file));
+        return ResponseEntity.ok().headers(header).body(inputStreamResource);
     }
 
     /**
